@@ -1,6 +1,6 @@
 services: 
   bento:
-    image: lewisdoesstuff/bento
+    build: .
     volumes:
       # Append Bento config location to below line.
       - ./config.js:/usr/share/nginx/html/config.js
