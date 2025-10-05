@@ -37,21 +37,31 @@ function setPosition(position) {
 	);
 }
 
+// Cambiar el proveedor de servicios de OpenWeatherMap a un servicio gratuito
 function getWeather(latitude, longitude) {
-	let api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&lang=${CONFIG.language}&appid=${key}`;
-	fetch(api)
+	let api = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${latitude}&lon=${longitude}`;
+	fetch(api, {
+		headers: {
+			'User-Agent': 'bento-rmartinbeni-weather-app',
+		},
+	})
 		.then(function(response) {
-			let data = response.json();
-			return data;
+			if (!response.ok) {
+				throw new Error('Error al obtener los datos del clima');
+			}
+			return response.json();
 		})
 		.then(function(data) {
-			let celsius = Math.floor(data.main.temp - KELVIN);
+			let celsius = Math.floor(data.properties.timeseries[0].data.instant.details.air_temperature);
 			weather.temperature.value = tempUnit == 'C' ? celsius : (celsius * 9) / 5 + 32;
-			weather.description = data.weather[0].description;
-			weather.iconId = data.weather[0].icon;
+			weather.description = 'N/A'; // Met.no no proporciona descripciones de clima
+			weather.iconId = 'unknown'; // Usamos un ícono genérico
 		})
 		.then(function() {
 			displayWeather();
+		})
+		.catch(function(error) {
+			console.error('Error:', error);
 		});
 }
 
