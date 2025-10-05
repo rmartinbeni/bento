@@ -1,7 +1,0 @@
-services:
-  bento:
-    build: .
-    ports:
-      - 80:80
-    volumes:
-      - ./config.js:/usr/share/nginx/html/config.js
