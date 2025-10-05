@@ -11,6 +11,7 @@ module.exports = {
         filename: 'main.min.js',
         path: path.resolve(__dirname, 'dist'),
     },
+    mode: 'production',
     optimization: {
         minimize: true,
         minimizer: [
